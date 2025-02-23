@@ -4,17 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Perfil extends Model
+class TipoPlantilla extends Model
 {
-    protected $table = 'perfiles';
-    protected $primarykey = 'perfil_id';
+    protected $table = 'tipo_plantilla';
+    protected $primarykey = 'tipo_plantilla_id';
     public $timestamps = true;
-
 
     protected $fillable = [
         'clave',
-        'perfil',
-        'baja',
+        'tipo_plantilla',
+        'baja'
     ];
 
     protected $hidden = [

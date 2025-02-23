@@ -4,17 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Perfil extends Model
+class Contactos extends Model
 {
-    protected $table = 'perfiles';
-    protected $primarykey = 'perfil_id';
+    protected $table = 'contactos';
+    protected $primarykey = 'contacto_id';
     public $timestamps = true;
-
 
     protected $fillable = [
         'clave',
-        'perfil',
-        'baja',
+        'user_id',
+        'contacto_tipo_id',
+        'contacto',
+        'baja'
     ];
 
     protected $hidden = [
