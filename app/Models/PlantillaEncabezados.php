@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PlantillaEncabezados extends Model
 {
     protected $table = 'plantilla_encabezados';
-    protected $primarykey = 'plantilla_encabezado_id';
+    protected $primaryKey = 'plantilla_encabezado_id';
     public $timestamps = true;
 
     protected $fillable = [
@@ -24,4 +24,16 @@ class PlantillaEncabezados extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function tipoPlantilla(){
+        return $this->belongsTo(TipoPlantilla::class, 'tipo_plantilla_id', 'tipo_plantilla_id');
+    }
+
+    public function plantillaSecciones(){
+        return $this->hasMany(PlantillaSecciones::class, 'plantilla_encabezado_id', 'plantilla_encabezado_id');
+    }
+
+    public function alimentos(){
+        return $this->hasMany(Alimentos::class, 'plantilla_encabezado_id', 'plantilla_encabezado_id');
+    }
 }

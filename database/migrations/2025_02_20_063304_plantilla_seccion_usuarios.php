@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('plantilla_seccion_usuarios', function(Blueprint $table){
             $table->id('plantilla_secccion_usuario_id');
-            $table->bigInteger('plantilla_seccion_id');
-            $table->bigInteger('user_id');
+            $table->foreignId('plantilla_seccion_id')->constrained('plantilla_secciones')->references('plantilla_seccion_id')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->references('user_id')->onDelete('cascade');
             $table->boolean('baja');
             $table->timestamps();
         });

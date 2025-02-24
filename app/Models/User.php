@@ -9,6 +9,10 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+
+    protected $table = 'users';
+    protected $primaryKey = 'user_id';
+    public $timestamps = true;
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -46,5 +50,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function contactos(){
+        return $this->hasMany(Contactos::class, 'user_id', 'user_id');
+    }
+
+    public function plantillaSeccionUsuarios(){
+        return $this->hasMany(PlantillaSeccionUsuarios::class, 'user_id', 'user_id');
+    }
+
+    public function perfil(){
+        return $this->belongsTo(Perfil::class, 'perfil_id', 'perfil_id');
     }
 }

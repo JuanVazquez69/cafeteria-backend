@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('plantilla_encabezados', function(Blueprint $table){
             $table->id('plantilla_encabezado_id');
             $table->bigInteger('clave', false, true);
-            $table->bigInteger('tipo_plantilla_id');
+            $table->foreignId('tipo_plantilla_id')->constrained('tipos_plantillas')->references('tipo_plantilla_id')->onDelete('cascade');
             $table->string('nombre');
             $table->string('descripcion');
             $table->double('baja');

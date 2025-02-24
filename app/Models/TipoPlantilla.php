@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TipoPlantilla extends Model
 {
     protected $table = 'tipo_plantilla';
-    protected $primarykey = 'tipo_plantilla_id';
+    protected $primaryKey = 'tipo_plantilla_id';
     public $timestamps = true;
 
     protected $fillable = [
@@ -20,4 +20,9 @@ class TipoPlantilla extends Model
         'created_at',
         'updated_at'
     ];
+
+
+    public function plantillaEncabezado(){
+        return $this->hasMany(PlantillaEncabezados::class, 'tipo_plantilla_id', 'tipo_plantilla_id');
+    }
 }

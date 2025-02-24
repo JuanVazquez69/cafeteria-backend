@@ -4,16 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PlantillaSecciones extends Model
+class Alimentos extends Model
 {
-    protected $table = "plantilla_secciones";
-    protected $primaryKey = "plantilla_seccion_id";
+    protected $table = 'alimentos';
+    protected $primarykey = 'alimento_id';
     public $timestamps = true;
 
     protected $fillable = [
         'plantilla_encabezado_id',
-        'orden',
-        'nombre',
+        'clave',
         'descripcion',
         'baja'
     ];
@@ -27,11 +26,7 @@ class PlantillaSecciones extends Model
         return $this->belongsTo(PlantillaEncabezados::class, 'plantilla_encabezado_id', 'plantilla_encabezado_id');
     }
 
-    public function plantillaSeccionUsuarios(){
-        return $this->hasMany(PlantillaSeccionUsuarios::class, 'plantilla_seccion_id', 'plantilla_seccion_id');
-    }
-
     public function alimentoDetalles(){
-        return $this->hasMany(AlimentosDetalles::class, 'plantilla_seccion_id', 'plantilla_seccion_id');
+        return $this->hasMany(AlimentosDetalles::class, 'alimento_id', 'alimento_id');
     }
 }

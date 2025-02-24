@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PlantillaSeccionUsuarios extends Model
 {
     protected $table = 'plantilla_seccion_usuarios';
-    protected $primarykey = 'plantilla_seccion_usuario_id';
+    protected $primaryKey = 'plantilla_seccion_usuario_id';
     public $timestamps = true;
 
     protected $fillable = [
@@ -20,4 +20,12 @@ class PlantillaSeccionUsuarios extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function users(){
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
+    public function plantillaSecciones(){
+        return $this->belongsTo(PlantillaSecciones::class, 'plantilla_seccion_id', 'plantilla_seccion_id');
+    }
 }

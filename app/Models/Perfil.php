@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Perfil extends Model
 {
     protected $table = 'perfiles';
-    protected $primarykey = 'perfil_id';
+    protected $primaryKey = 'perfil_id';
     public $timestamps = true;
 
 
@@ -21,4 +21,8 @@ class Perfil extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function users(){
+        return $this->hasMany(User::class, 'perfil_id', 'perfil_id');
+    }
 }

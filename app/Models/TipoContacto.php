@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TipoContacto extends Model
 {
     protected $table = 'tipo_contacto';
-    protected $primarykey = 'tipo_contacto_id';
+    protected $primaryKey = 'tipo_contacto_id';
     public $timestampos = true;
 
     protected $fillable = [
@@ -20,4 +20,8 @@ class TipoContacto extends Model
         'created_at',
         'updated_at'
     ];
+
+    protected function contactos(){
+        return $this->hasMany(Contactos::class, 'tipo_contacto_id', 'tipo_contacto_id');
+    }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('alimentos', function(Blueprint $table){
             $table->id('alimento_id');
             $table->string('clave');
-            $table->bigInteger('plantilla_encabezado_id');
+            $table->foreignId('plantilla_encabezado_id')->constrained('plantilla_encabezados')->references('plantilla_encabezado_id')->onDelete('cascade');
             $table->string('descripcion');
             $table->boolean('baja');
             $table->timestamps();

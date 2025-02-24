@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PlantillaDetalles extends Model
 {
     protected $table = 'plantilla_detalles';
-    protected $primarykey = 'plantilla_detalle_id';
+    protected $primaryKey = 'plantilla_detalle_id';
     public $timestamps = true;
 
     protected $fillable = [
@@ -29,4 +29,12 @@ class PlantillaDetalles extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function tipoCampo(){
+        return $this->belongsTo(TipoCampo::class, 'tipo_contacto_id', 'tipo_contacto_id');
+    }
+
+    public function alimentoDetalles(){
+        return $this->hasMany(AlimentosDetalles::class, 'plantilla_detalle_id', 'plantilla_detalle_id');
+    }
 }

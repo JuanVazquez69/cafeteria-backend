@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('Contactos', function(Blueprint $table){
             $table->id('contacto_id');
             $table->bigInteger('clave', false, true);
-            $table->bigInteger('user_id', false, true);
-            $table->bigInteger('contacto_tipo_id', false, true);
+            $table->foreignId('user_id')->constrained('users')->references('user_id')->onDelete('cascade');
+            $table->foreignId('tipo_contacto_id')->constrained('tipo_contacto')->references('tipo_contacto_id')->onDelete('cascade');
             $table->string('contacto');
             $table->boolean('baja');
             $table->timestamps();

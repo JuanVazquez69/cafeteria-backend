@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('plantilla_secciones', function(Blueprint $table){
             $table->id('plantilla_seccion_id');
-            $table->bigInteger('plantilla_encabezado_id', false, true);
+            $table->foreignId('plantilla_encabezado_id')->constrained('plantilla_encabezados')->references('plantilla_encabezado_id')->onDelete('cascade');
             $table->integer('orden', false, true);
             $table->string('nombre');
             $table->string('descripcion');

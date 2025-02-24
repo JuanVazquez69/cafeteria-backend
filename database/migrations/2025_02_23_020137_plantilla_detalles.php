@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('plantilla_detalles', function(Blueprint $table){
             $table->id('plantilla_detalle_Id');
-            $table->bigInteger('plantilla_seccion_id', false, true);
+            $table->foreignId('plantilla_seccion_id')->constrained('plantilla_secciones')->references('plantilla_seccion_id')->onDelete('cascade');
             $table->integer('orden', false, true);
             $table->string('etiqueta');
             $table->text('descripcion');
-            $table->bigInteger('tipo_campo_id', false, true);
+            $table->foreignId('tipo_campo_id')->constrained('tipo_campo')->references('tipo_campo_id')->onDelete('cascade');
             $table->text('longitud');
             $table->text('obligatorio');
             $table->text('valor_default');

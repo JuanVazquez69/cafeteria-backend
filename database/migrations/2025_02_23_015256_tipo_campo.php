@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tipo_campo', function(Blueprint $table){
-            $table->id('tipo_campo');
+            $table->id('tipo_campo_id');
             $table->string('nombre');
             $table->longText('valor');
             $table->boolean('baja');
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipos_campo');
+        Schema::dropIfExists('tipo_campo');
     }
 };
