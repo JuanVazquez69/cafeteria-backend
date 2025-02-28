@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('alimentos_detalles', function(Blueprint $table){
             $table->id('alimento_detalle_id');
-            $table->foreignId('alimentos_id')->constrained('alimentos')->references('alimento_id')->onDelete('cascade');
+            $table->foreignId('alimento_id')->constrained('alimentos')->references('alimento_id')->onDelete('cascade');
             $table->foreignId('plantilla_seccion_id')->constrained('plantilla_secciones')->references('plantilla_seccion_id')->onDelete('cascade');
             $table->foreignId('plantilla_detalle_id')->constrained('plantilla_detalles')->references('plantilla_detalle_id')->onDelete('cascade');
             $table->string('valor');

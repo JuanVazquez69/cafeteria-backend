@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\TipoPlantilla;
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
+
+use function Pest\Laravel\json;
 
 class TipoPlantillaController extends Controller
 {
@@ -13,7 +16,7 @@ class TipoPlantillaController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(TipoPlantilla::all());
     }
 
     /**
@@ -29,7 +32,18 @@ class TipoPlantillaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tipoPlantilla = TipoPlantilla::create(
+            [
+                'clave' => $request['clave'],
+                'tipo_platilla' => $request['tipo_platilla'],
+                'baja' => 0
+            ]
+        );
+
+        return response()->json([
+            'message' => 'Tipo plantilla creada',
+            'registro' => $tipoPlantilla,
+        ], 200);
     }
 
     /**
@@ -37,7 +51,10 @@ class TipoPlantillaController extends Controller
      */
     public function show(TipoPlantilla $tipoPlantilla)
     {
-        //
+        return response()->json(
+            [
+                TipoPlantilla::findOrFail($tipoPlantilla['tipo_plantilla_id'])
+            ], 200);
     }
 
     /**
@@ -51,16 +68,38 @@ class TipoPlantillaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TipoPlantilla $tipoPlantilla)
+    public function update(Request $request, $id)
     {
-        //
+        $tipoPlantilla = TipoPlantilla::findOrFail($id);
+        $tipoPlantilla->update($request->all());
+
+        return response()->json([
+            $tipoPlantilla
+        ], 200);
     }
+
+    /**
+     * Update status baja to true
+     */
+
+     public function baja($tipoPlantilla){
+        $tipoPlantillaDown = TipoPlantilla::findOrFail($tipoPlantilla['tipo_plantilla_id']);
+        $tipoPlantillaDown->update(['baja' => 1]);
+
+        return response()->json([
+            'message' => 'Tipo plantilla ha sido de baja'
+        ], 204);
+     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(TipoPlantilla $tipoPlantilla)
     {
-        //
+        TipoPlantilla::findOrFail($tipoPlantilla['tipo_plantilla_id'])->delete();
+
+        return response()->json([
+            'message' => 'Eliminación exitosa'
+        ], 204);
     }
 }

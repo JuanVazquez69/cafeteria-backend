@@ -23,24 +23,30 @@ class PerfilController extends Controller
 
         return response()->json([
             'message' => 'Perfil creado',
-            'status' => 201
-        ]);
+            'registro' => $perfil,
+        ], 201);
     }
 
     public function show($id){
-        return response()->json(Perfil::findOrFail($id));
+        return response()->json([
+            Perfil::findOrFail($id),
+        ], 200);
     }
 
     public function update(Request $request, $id){
         $perfil = Perfil::findOrFail($id);
         $perfil->update($request->all());
-        return response()->json($perfil);
+        return response()->json([
+            $perfil,
+        ], 200);
     }
 
     public function baja($id){
         $perfil = Perfil::findOrFail($id);
         $perfil->update(['baja' => 1]);
-        return response()->json(['message' => 'Perfil dado de baja', 200]);
+        return response()->json([
+            'message' => 'Perfil dado de baja',
+        ], 204);
     }
 
     public function destroy($id){

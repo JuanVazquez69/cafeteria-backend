@@ -13,7 +13,7 @@ class TipoContactoController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(TipoContacto::all());
     }
 
     /**
@@ -29,7 +29,18 @@ class TipoContactoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tipoContacto = TipoContacto::create(
+            [
+                'clave' => $request['clave'],
+                'tipo_contacto' => 'tipo_contacto',
+                'baja' => 0
+            ]
+        );
+
+        return response()->json([
+            'message' => 'Tipo contacto creado',
+            'registro' => $tipoContacto,
+        ], 201);
     }
 
     /**
@@ -37,7 +48,9 @@ class TipoContactoController extends Controller
      */
     public function show(TipoContacto $tipoContacto)
     {
-        //
+        return response()->json([
+            TipoContacto::findOrFail($tipoContacto['tipo_contacto_id'])
+        ], 200);
     }
 
     /**
@@ -51,9 +64,30 @@ class TipoContactoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TipoContacto $tipoContacto)
+    public function update(Request $request, $id)
     {
-        //
+        $tipoContacto = TipoContacto::findOrFail($id);
+        $tipoContacto->update($request->all());
+
+        return response()->json([
+            $tipoContacto
+        ], 200);
+    }
+
+    /**
+     * Update the status 'baja' to true or 1
+     */
+
+    public function baja(TipoContacto $tipoContacto){
+        $tipoContactoDown = TipoContacto::findOrFail(
+            $tipoContacto['tipo_contacto_id']
+        );
+        $tipoContactoDown->update(['baja' => 1]);
+
+        return response()->json(
+            [
+                'message' => 'Tipo contacto dado de baja'
+            ], 204);
     }
 
     /**
@@ -61,6 +95,10 @@ class TipoContactoController extends Controller
      */
     public function destroy(TipoContacto $tipoContacto)
     {
-        //
+        TipoContacto::findOrFail($tipoContacto['tipo_contacto_id'])->delete();
+
+        return response()->json([
+            'message' => 'Eliminación exitosa'
+        ], 204);
     }
 }

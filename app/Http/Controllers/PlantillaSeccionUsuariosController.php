@@ -6,6 +6,8 @@ use App\Models\PlantillaSeccionUsuarios;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use function Pest\Laravel\json;
+
 class PlantillaSeccionUsuariosController extends Controller
 {
     /**
@@ -13,7 +15,7 @@ class PlantillaSeccionUsuariosController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(PlantillaSeccionUsuarios::all());
     }
 
     /**
@@ -21,7 +23,7 @@ class PlantillaSeccionUsuariosController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -29,7 +31,18 @@ class PlantillaSeccionUsuariosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $plantilla_seccion_usuarios = PlantillaSeccionUsuarios::create(
+            [
+                'plantilla_seccion_id' => $request['plantilla_seccion_id'],
+                'user_id' => $request['user_id'],
+                'baja' => 0
+            ]
+        );
+
+        return response()->json([
+            'message' => 'Plantilla sección usuarios creada',
+            'registro' => $plantilla_seccion_usuarios
+        ], 200);
     }
 
     /**
@@ -37,7 +50,11 @@ class PlantillaSeccionUsuariosController extends Controller
      */
     public function show(PlantillaSeccionUsuarios $plantillaSeccionUsuarios)
     {
-        //
+        return response()->json(
+            [
+                'registro' => PlantillaSeccionUsuarios::findOrFail($plantillaSeccionUsuarios['plantilla_seccion_usuarios_id']),
+            ], 200
+            );
     }
 
     /**
@@ -51,9 +68,32 @@ class PlantillaSeccionUsuariosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PlantillaSeccionUsuarios $plantillaSeccionUsuarios)
+    public function update(Request $request, $id)
     {
-        //
+        $plantilla_seccion_usuarios = PlantillaSeccionUsuarios::findOrFail($id);
+        $plantilla_seccion_usuarios->update($request->all());
+
+        return response()->json(
+            [
+                'registro' => $plantilla_seccion_usuarios,
+            ], 200
+        );
+    }
+
+     /**
+     * Update the status 'baja' to true or 1
+     */
+
+     public function baja(PlantillaSeccionUsuarios $plantillaSeccionUsuarios){
+        $plantilla_seccion_usuarios_down = PlantillaSeccionUsuarios::findOrFail(
+            $plantillaSeccionUsuarios['tipo_contacto_id']
+        );
+        $plantilla_seccion_usuarios_down->update(['baja' => 1]);
+
+        return response()->json(
+            [
+                'message' => 'Plantilla sección usuarios dado de baja'
+            ], 204);
     }
 
     /**
@@ -61,6 +101,12 @@ class PlantillaSeccionUsuariosController extends Controller
      */
     public function destroy(PlantillaSeccionUsuarios $plantillaSeccionUsuarios)
     {
-        //
+        PlantillaSeccionUsuarios::findOrFail($plantillaSeccionUsuarios['plantilla_seccion_usuarios_id'])->delete();
+
+        return response()->json(
+            [
+                'message' => 'Eliminación exitosa',
+            ], 204
+        );
     }
 }

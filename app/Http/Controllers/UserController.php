@@ -22,29 +22,38 @@ class UserController extends Controller
         ]);
         
         return response()->json([
-            'message' => 'Usuario creado exitosamente',
-            'status' => 201
-        ]);
+            'message' => 'Usuario creado exitosamente'
+        ], 200);
     }
 
     public function show($id){
-        return response()->json(User::findOrFail($id));
+        return response()->json([
+            User::findOrFail($id)
+        ], 200);
     }
 
     public function update(Request $request, $id){
         $usuario = User::findOrFail($id);
         $usuario->update($request->all());
-        return response()->json($usuario);
+        return response()->json([
+            $usuario
+        ], 200);
     }
 
     public function baja($id){
         $usuario = User::findOrFail($id);
         $usuario->update(['baja' => 1]);
-        return response()->json(['message' => 'Usuario dado de baja']);
+        return response()->json(
+            [
+                'message' => 'Usuario dado de baja'
+            ], 204);
     }
 
     public function destroy($id){
         User::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return response()->json(
+            [
+                'message' => 'Eliminación exitosa'
+        ], 204);
     }
 }
