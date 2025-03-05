@@ -5,11 +5,28 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
     public function index(){
         return response()->json(User::all());
+    }
+
+    public function login(Request $request){
+        $user = User::where('email', $request->email)->first();
+
+        if(!$user || !Hash::check($request->password, $user->password)){
+            throw ValidationException::withMessages([
+                'email' => ['Las credenciales son incorrectas']
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Login correcto',
+            'token' => $user->createToken('auth_token')->plainTextToken,
+        ], 200);
     }
 
     public function store(Request $request){
@@ -19,16 +36,21 @@ class UserController extends Controller
             'email' => $request['email'],
             'password' => $request['password'],
             'baja' => 0
-        ]);
+        ]); 
+
+        $contactos = $usuario->contactos()->createMany($request['contactos']);
+        
         
         return response()->json([
             'message' => 'Usuario creado exitosamente'
         ], 200);
     }
 
-    public function show($id){
+    public function show(Request $request){
+        
+
         return response()->json([
-            User::findOrFail($id)
+            User::findOrFail()
         ], 200);
     }
 

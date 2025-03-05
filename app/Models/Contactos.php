@@ -23,6 +23,16 @@ class Contactos extends Model
         'updated_at'
     ];
 
+    protected static function booted()
+    {
+        static::created(function ($contacto){
+            // Actualiza el campo 'clave' con el ID recién generado
+            $contacto->update([
+                'clave' => $contacto->contacto_id
+            ]);
+        });
+    }
+
     public function user(){
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('Contactos', function(Blueprint $table){
             $table->id('contacto_id');
-            $table->bigInteger('clave', false, true);
+            $table->bigInteger('clave', false, true)->nullable(true);
             $table->foreignId('user_id')->constrained('users')->references('user_id')->onDelete('cascade');
             $table->foreignId('tipo_contacto_id')->constrained('tipo_contacto')->references('tipo_contacto_id')->onDelete('cascade');
             $table->string('contacto');
-            $table->boolean('baja');
+            $table->boolean('baja')->default(0);
             $table->timestamps();
         });
     }

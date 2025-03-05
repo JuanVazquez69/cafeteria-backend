@@ -32,7 +32,7 @@ class TipoContactoController extends Controller
         $tipoContacto = TipoContacto::create(
             [
                 'clave' => $request['clave'],
-                'tipo_contacto' => 'tipo_contacto',
+                'tipo' => $request['tipo'],
                 'baja' => 0
             ]
         );

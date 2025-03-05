@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contactos;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Mockery\Matcher\Contains;
-
-use function Pest\Laravel\json;
+use function PHPUnit\Framework\isNull;
 
 class ContactosController extends Controller
 {
@@ -38,7 +36,7 @@ class ContactosController extends Controller
     {
         $contacto = Contactos::create(
             [
-                'clave' => $request['clave'],
+                'clave' => !$request['clave'].isNull() ? $request['clave'] : '',
                 'user_id' => $request['user_id'],
                 'tipo_contacto_id' => $request['tipo_contacto_id'],
                 'contacto' => $request['contacto'],
