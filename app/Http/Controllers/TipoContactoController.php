@@ -64,7 +64,7 @@ class TipoContactoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
         $tipoContacto = TipoContacto::findOrFail($id);
         $tipoContacto->update($request->all());

@@ -35,7 +35,7 @@ class TipoPlantillaController extends Controller
         $tipoPlantilla = TipoPlantilla::create(
             [
                 'clave' => $request['clave'],
-                'tipo_platilla' => $request['tipo_platilla'],
+                'tipo_plantilla' => $request['tipo_plantilla'],
                 'baja' => 0
             ]
         );
@@ -68,7 +68,7 @@ class TipoPlantillaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
         $tipoPlantilla = TipoPlantilla::findOrFail($id);
         $tipoPlantilla->update($request->all());
@@ -82,9 +82,9 @@ class TipoPlantillaController extends Controller
      * Update status baja to true
      */
 
-     public function baja($tipoPlantilla){
-        $tipoPlantillaDown = TipoPlantilla::findOrFail($tipoPlantilla['tipo_plantilla_id']);
-        $tipoPlantillaDown->update(['baja' => 1]);
+     public function baja(Request $request){
+        $tipoPlantilla = TipoPlantilla::findOrFail($request['tipo_plantilla_id']);
+        $tipoPlantilla->update(['baja' => 1]);
 
         return response()->json([
             'message' => 'Tipo plantilla ha sido de baja'

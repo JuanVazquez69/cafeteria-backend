@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TipoPlantilla extends Model
 {
-    protected $table = 'tipo_plantilla';
+    protected $table = 'tipos_plantillas';
     protected $primaryKey = 'tipo_plantilla_id';
     public $timestamps = true;
 

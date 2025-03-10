@@ -33,7 +33,7 @@ class PerfilController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update($id, Request $request){
         $perfil = Perfil::findOrFail($id);
         $perfil->update($request->all());
         return response()->json([
@@ -41,12 +41,12 @@ class PerfilController extends Controller
         ], 200);
     }
 
-    public function baja($id){
-        $perfil = Perfil::findOrFail($id);
+    public function baja(Request $request){
+        $perfil = Perfil::findOrFail($request['perfil_id']);
         $perfil->update(['baja' => 1]);
         return response()->json([
             'message' => 'Perfil dado de baja',
-        ], 204);
+        ], 200);
     }
 
     public function destroy($id){

@@ -1,10 +1,15 @@
 <?php
 
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\PlantillaEncabezadosController;
 use App\Http\Controllers\TipoContactoController;
+use App\Http\Controllers\TipoPlantillaController;
 use App\Http\Controllers\UserController;
 use App\Models\Perfil;
+use App\Models\PlantillaEncabezados;
 use App\Models\TipoContacto;
+use App\Models\TipoPlantilla;
+use Illuminate\Database\Query\IndexHint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,10 +30,10 @@ Route::controller(UserController::class)->prefix('user')->group(function(){
     Route::delete('/delete', 'destroy')->name('user.destroy');
 });
 
-Route::controller(TipoContactoController::class)->prefix('tipo-contacto')->group(function(){
+Route::controller(TipoContactoController::class)->prefix('tipo_contacto')->group(function(){
     Route::get('/', 'index')->name('tipo-contacto.index');
     Route::post('/store', 'store')->name('tipo-contacto.store');
-    Route::put('/update', 'update')->name('tipo-contacto.update');
+    Route::put('/update/{id}', 'update')->name('tipo-contacto.update');
     Route::put('/baja', 'baja')->name('tipo-contacto.baja');
     Route::delete('/delete', 'destroy')->name('tipo-contacto.destroy');
 });
@@ -36,7 +41,19 @@ Route::controller(TipoContactoController::class)->prefix('tipo-contacto')->group
 Route::controller(PerfilController::class)->prefix('perfil')->group(function(){
     Route::get('/', 'index')->name('perfil.index');
     Route::post('/store', 'store')->name('perfil.store');
-    Route::put('/update', 'update')->name('perfil.update');
+    Route::put('/update/{id}', 'update')->name('perfil.update');
     Route::put('/baja', 'baja')->name('perfil.baja');
     Route::delete('/delete', 'destroy')->name('perfil.destroy');
+});
+
+Route::controller(PlantillaEncabezadosController::class)->prefix('plantillas')->group(function(){
+    Route::post('/', 'index')->name('plantillas.index');
+});
+
+Route::controller(TipoPlantillaController::class)->prefix('tipo_plantilla')->group(function(){
+    Route::get('/', 'index')->name('tipo_plantila.index');
+    Route::post('/store', 'store')->name('tipo_plantilla.store');
+    Route::put('/update/{id}', 'update')->name('tipo_plantilla.update');
+    Route::put('/baja', 'baja')->name('tipo_plantilla.baja');
+    Route::delete('/delete', 'delete')->name('tipo_plantilla.delete');
 });

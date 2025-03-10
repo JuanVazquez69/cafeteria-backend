@@ -80,9 +80,9 @@ class TipoCampoController extends Controller
      * Update the status baja to true
      */
 
-     public function baja(TipoCampo $tipoCampo){
-        $tipoCampoDown = TipoCampo::findOrFail($tipoCampo['tipo_campo_id']);
-        $tipoCampoDown->update(['baja' => 1]);
+     public function baja(Request $request){
+        $tipoCampo = TipoCampo::findOrFail($request['tipo_campo_id']);
+        $tipoCampo->update(['baja' => 1]);
 
         return response()->json(
             [
