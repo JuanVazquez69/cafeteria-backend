@@ -11,34 +11,39 @@ use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use function PHPSTORM_META\type;
+
 class PlantillaEncabezadosController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($tipo_plantilla_id)
+    public function index()
     {
+        /*
         $encabezados = PlantillaEncabezados::where('baja', 0)
             ->where('tipo_plantilla_id', $tipo_plantilla_id)
             ->get();
+            */
+        $encabezados = PlantillaEncabezados::get();
 
         foreach($encabezados as  $key_encabezado => $encabezado){
             $plantilla_encabezado_id = $encabezado->plantilla_encabezado_id;
-            $encabezado->tabsData = PlantillaSecciones::where('plantilla_encabezado_id', $plantilla_encabezado_id)
+            $encabezado->secciones = PlantillaSecciones::where('plantilla_encabezado_id', $plantilla_encabezado_id)
                 ->where('baja', 0)
                 ->get();
-            foreach($encabezado->tabsData as $key_tab => $tab){
+            foreach($encabezado->secciones as $key_tab => $tab){
                     $plantilla_seccion_id = $tab->plantilla_seccion_id;
-                    $contenido = PlantillaDetalles::where('plantilla_seccion_id', $plantilla_seccion_id)
+                    $detalles = PlantillaDetalles::where('plantilla_seccion_id', $plantilla_seccion_id)
                         ->where('baja', 0)
                         ->get();
-                    $encabezado->tabsData[$key_tab]->contenido = $contenido->toArray();
+                    $encabezado->secciones[$key_tab]->detalles = $detalles->toArray();
 
                     $permisos = PlantillaSeccionUsuarios::where('plantilla_seccion_id', $plantilla_seccion_id)
                         ->where('baja', 0)
                         ->get();
                     
-                    $encabezado->tabsData[$key_tab]->permisos = array_column($permisos->toArray(), 'usuarios_id');
+                    $encabezado->secciones[$key_tab]->permisos = array_column($permisos->toArray(), 'usuarios_id');
                 }
                 $encabezados[$key_encabezado] = $encabezado;
             }
@@ -65,13 +70,11 @@ class PlantillaEncabezadosController extends Controller
 
             //Guardar en PlantillaEncabezado
             $encabezado = PlantillaEncabezados::create([
-                'principal' => $data['principal'] ? 1 : 0,
-                'clave_automatica' => $data['clave_automatica'] ? 1 : 0,
-                'clave' => $data['clave'],
-                'nombre' => $data['nombre'],
-                'descripcion' => $data['descripcion'],
+                'clave' => $data['encabezado']['clave'],
+                'nombre' => $data['encabezado']['nombre'],
+                'descripcion' => $data['encabezado']['descripcion'],
                 'baja' => 0,
-                'tipo_plantilla_id' => $data['tipo_plantilla_id']
+                'tipo_plantilla_id' => $data['encabezado']['tipo_plantilla_id']
             ]);
 
             $plantilla_encabezado_id = $encabezado->plantilla_encabezado_id;
@@ -89,23 +92,24 @@ class PlantillaEncabezadosController extends Controller
                 $plantilla_seccion_id = $nuevaSEccion->plantilla_seccion_id;
 
                 //SE insertan detalles de la sección
-                foreach($seccion['contenido'] as $contenido){
+                foreach($seccion['detalles'] as $contenido){
                     $nuevosDetalles = PlantillaDetalles::create([
                         'plantilla_seccion_id' => $plantilla_seccion_id,
                         'orden' => (isset($contenido['orden']) ? $contenido['orden'] : 0),
                         'etiqueta' => (isset($contenido['etiqueta']) ? $contenido['etiqueta'] : ''),
                         'descripcion' => (isset($contenido['descripcion']) ? $contenido['descripcion'] : ''),
                         'tipo_campo_id' => (isset($contenido['tipo_campo_id']) ? $contenido['tipo_campo_id'] : ''),
-                        'logitud' => (isset($contenido['longitud']) ? $contenido['longitud'] : 0),
+                        'longitud' => (isset($contenido['longitud']) ? $contenido['longitud'] : 0),
                         'obligatorio' => (isset($contendio['obligatorio']) ? $contendio['obligatorio'] : 0),
-                        'valro_default' => (isset($contendio['valor_default']) ? $contendio['valor_defult'] : ''),
+                        'valor_default' => (isset($contendio['valor_default']) ? $contendio['valor_defult'] : ''),
                         'valor_minimo' => (isset($contenido['valor_minimo']) ? $contenido['valor_minimo'] : ''),
+                        'valor_maximo' => (isset($contenido['valor_maximo']) ? $contenido['valor_maximo'] : ''),
                         'valor_ideal' => (isset($contendio['valor_ideal']) ? $contendio['valor_ideal'] : ''),
                         'baja' => 0
                     ]);
                 }
 
-                //Se insertan permisos de la seccion
+                /*Se insertan permisos de la seccion
                 $permisos = $seccion['permisos'];
                 foreach($permisos as $key => $permiso){
                     PlantillaSeccionUsuarios::create([
@@ -114,14 +118,15 @@ class PlantillaEncabezadosController extends Controller
                         'baja' => 0
                     ]);
                 }
-
-                //Confirmar la transacción
-                DB::commit();
-
-                return response()->json([
-                    'message' => 'plantilla fue creada con exito',
-                ], 201);
+                */
             }
+            //Confirmar la transacción
+            DB::commit();
+
+            return response()->json([
+                'message' => 'plantilla fue creada con exito',
+            ], 201);
+            
         }catch(\Exception $e){
             DB::rollBack();
             return response()->json([
@@ -295,11 +300,32 @@ class PlantillaEncabezadosController extends Controller
     }
 
     /**
+     * Update baja to false
+     */
+
+     public function alta(Request $request){
+        $encabezado = PlantillaEncabezados::findOrFail($request['plantilla_encabezado_id']);
+
+        if(!$encabezado)
+            return response()->json(['message' => 'Encabezado no encontrado']);
+
+        if($encabezado->baja == 0){
+            return response()->json(['message' => 'Encabezado ya dado de alta']);
+        }
+
+        $encabezado->update(['baja' => 0]);
+
+        return response()->json([
+            'message' => 'Encabezado dado de alta'
+        ], 204);
+     }
+
+    /**
      * Update baja to true
      */
 
-     public function baja(PlantillaEncabezados $plantillaEncabezado){
-        $encabezado = PlantillaEncabezados::findOrFail($plantillaEncabezado['plantilla_encabezado_id']);
+     public function baja(Request $request){
+        $encabezado = PlantillaEncabezados::findOrFail($request['plantilla_encabezado_id']);
 
         if(!$encabezado)
             return response()->json(['message' => 'Encabezado no encontrado']);

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use function Pest\Laravel\delete;
+use function Pest\Laravel\json;
 
 class TipoCampoController extends Controller
 {
@@ -27,14 +28,33 @@ class TipoCampoController extends Controller
     }
 
     /**
+     * Store a list newly created resource in storage
+     */
+
+     public function storeList(Request $request){
+
+        foreach ($request->all() as $registro){
+            $campo = TipoCampo::create([
+                'nombre' => $registro['nombre'],
+                'valor' => $registro['valor'],
+                'baja' => 0
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Lista de campos creada'
+        ]);
+     }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         $tipoCampo = TipoCampo::create(
             [
-                'clave' => $request['clave'],
-                'perfil' => $request['perfil'],
+                'nombre' => $request['nombre'],
+                'valor' => $request['valor'],
                 'baja' => 0
             ]
         );

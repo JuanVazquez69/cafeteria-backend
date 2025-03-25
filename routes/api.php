@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\PlantillaEncabezadosController;
+use App\Http\Controllers\TipoCampoController;
 use App\Http\Controllers\TipoContactoController;
 use App\Http\Controllers\TipoPlantillaController;
 use App\Http\Controllers\UserController;
 use App\Models\Perfil;
 use App\Models\PlantillaEncabezados;
+use App\Models\TipoCampo;
 use App\Models\TipoContacto;
 use App\Models\TipoPlantilla;
 use Illuminate\Database\Query\IndexHint;
@@ -47,7 +49,10 @@ Route::controller(PerfilController::class)->prefix('perfil')->group(function(){
 });
 
 Route::controller(PlantillaEncabezadosController::class)->prefix('plantillas')->group(function(){
-    Route::post('/', 'index')->name('plantillas.index');
+    Route::get('/', 'index')->name('plantillas.index');
+    Route::post('/store', 'store')->name('plantillas.store');
+    Route::put('/baja', 'baja')->name('plantillas.baja');
+    Route::put('/alta', 'alta')->name('plantillas.alta');
 });
 
 Route::controller(TipoPlantillaController::class)->prefix('tipo_plantilla')->group(function(){
@@ -56,4 +61,13 @@ Route::controller(TipoPlantillaController::class)->prefix('tipo_plantilla')->gro
     Route::put('/update/{id}', 'update')->name('tipo_plantilla.update');
     Route::put('/baja', 'baja')->name('tipo_plantilla.baja');
     Route::delete('/delete', 'delete')->name('tipo_plantilla.delete');
+});
+
+Route::controller(TipoCampoController::class)->prefix('tipo_campo')->group(function(){
+    Route::get('/', 'index')->name('tipo_campo.index');
+    Route::post('/store', 'store')->name('tipo_campo.store');
+    Route::post('/storeList', 'storeList')->name('tipo_campo.storeList');
+    Route::put('/update/{id}', 'update')->name('tipo_campo.update');
+    Route::put('/baja', 'baja')->name('tipo_campo.baja');
+    Route::delete('/delete', 'delete')->name('tipo_campo.delete');
 });

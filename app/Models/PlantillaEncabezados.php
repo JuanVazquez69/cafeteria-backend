@@ -12,9 +12,7 @@ class PlantillaEncabezados extends Model
 
     protected $fillable = [
         'tipo_plantilla_id',
-        'clave_automatica',
         'clave',
-        'principal',
         'nombre',
         'descripcion',
         'baja'
