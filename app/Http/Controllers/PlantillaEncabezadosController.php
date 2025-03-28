@@ -164,14 +164,10 @@ class PlantillaEncabezadosController extends Controller
         try{
             $data = $request->json()->all();
 
-            $plantilla_encabezado_id = $data['plantilla_encabezado_id'];
+            $plantilla_encabezado_id = $data['encabezado']['plantilla_encabezado_id'];
             $encabezado = PlantillaEncabezados::findOrFail($plantilla_encabezado_id);
-            foreach($data as $key_data =>  $renglon){
-                if(isset($encabezado[$key_data])){
-                    $renglon = ($key_data == 'principal' || $key_data == 'clave_automatica') ? ($renglon ? 1 : 0) : $renglon;
-                    $encabezado[$key_data] = $renglon;
-                }
-            }
+            
+            $encabezado->update($data['encabezado']);
             $encabezado->save();
 
             //Se consultan las secciones anteriores
@@ -213,7 +209,7 @@ class PlantillaEncabezadosController extends Controller
                         ->where('baja', 0)
                         ->get();
                     $contenido_originales_id = array_column($contenido_originales->toArray(), 'plantilla_detalle_id');
-                    $contenido_nuevas_id = array_column($seccion['contenido'], 'id');
+                    $contenido_nuevas_id = array_column($seccion['detalles'], 'id');
                     $contenido_eliminados = array_diff($contenido_originales_id, $contenido_nuevas_id);
 
                     //Eliminar detalles eliminados
@@ -248,7 +244,7 @@ class PlantillaEncabezadosController extends Controller
                         'baja' => 0
                     ]);
                     $plantilla_seccion_id = $nuevaSeccion->plantila_seccion_id;
-                    $nuevos_detalles_seccion = $seccion['contenido'];
+                    $nuevos_detalles_seccion = $seccion['detalles'];
                 }
                 foreach($nuevos_detalles_seccion as $key => $contenido){
                     $nuevosDetalles = PlantillaDetalles::create([
@@ -269,19 +265,20 @@ class PlantillaEncabezadosController extends Controller
             }
 
             //Se insertan permisos de la sección
-            PlantillaSeccionUsuarios::where('plantilla_sección_id', $plantilla_seccion_id)
+            PlantillaSeccionUsuarios::where('plantilla_seccion_id', $plantilla_seccion_id)
                 ->where('baja', 0)
                 ->update(['baja' => 1]);
 
-            $permisos = $seccion['permisos'];
+            //$permisos = $seccion['permisos'];
 
+            /*
             foreach($permisos as $key => $permisos){
                 PlantillaSeccionUsuarios::create([
                     'plantilla_seccion_id' => $plantilla_seccion_id,
                     'user_id' => $permisos,
                     'baja' => 0
                 ]);
-            }
+            }*/
 
             //confirmar la transacción
             DB::commit();
@@ -289,6 +286,7 @@ class PlantillaEncabezadosController extends Controller
                 [
                     'message' => 'Plantilla actualizada con exito'
                 ], 200);
+                
         }catch(\Exception $e){
             //Revertir la transacción en caso de error
             DB::rollBack();

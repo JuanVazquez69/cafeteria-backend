@@ -51,6 +51,7 @@ Route::controller(PerfilController::class)->prefix('perfil')->group(function(){
 Route::controller(PlantillaEncabezadosController::class)->prefix('plantillas')->group(function(){
     Route::get('/', 'index')->name('plantillas.index');
     Route::post('/store', 'store')->name('plantillas.store');
+    Route::put('/update', 'update')->name('plantilla.update');
     Route::put('/baja', 'baja')->name('plantillas.baja');
     Route::put('/alta', 'alta')->name('plantillas.alta');
 });
