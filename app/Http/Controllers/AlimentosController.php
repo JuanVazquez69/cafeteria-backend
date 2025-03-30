@@ -108,8 +108,8 @@ class AlimentosController extends Controller
             );
 
             $alimento_id = $alimento->alimento_id;
-            foreach($data['datos_seccion'] as $seccion){
-                foreach($seccion['datos_form']['data'] as $key => $detalle){
+            foreach($data['secciones'] as $seccion){
+                foreach($seccion['contenido']['data'] as $key => $detalle){
                     $nuevo_detalle = AlimentosDetalles::create(
                         [
                             'alimento_id' => $alimento_id,

@@ -8,7 +8,7 @@ class TipoContacto extends Model
 {
     protected $table = 'tipo_contacto';
     protected $primaryKey = 'tipo_contacto_id';
-    public $timestampos = true;
+    public $timestamps = true;
 
     protected $fillable = [
         'clave',

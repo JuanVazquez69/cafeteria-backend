@@ -39,4 +39,8 @@ class AlimentosDetalles extends Model
     public function archivosFTP(){
         return $this->belongsTo(ArchivosFTP::class, 'archivo_ftp_id', 'archivo_ftp_id');
     }
+
+    public function contenidoPedidos() {
+        return $this->hasMany(ContenidoPedidos::class, 'alimento_detalle_id', 'alimento_detalle_id');
+    }
 }
