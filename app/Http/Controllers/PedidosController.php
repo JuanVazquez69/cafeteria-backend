@@ -39,10 +39,7 @@ class PedidosController extends Controller
             ]
         );
 
-
         $contenido_pedido = $pedido->contenidoPedido()->createMany($request['contenido_pedido']);
-
-
 
         return response()->json([
             'message' => 'Pedido creado',

@@ -40,4 +40,8 @@ class Pedidos extends Model
     public function contenidoPedido() {
         return $this->hasMany(ContenidoPedidos::class, 'contenido_pedido_id', 'contenido_pedido_id');
     }
+
+    public function usurio(){
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
 }

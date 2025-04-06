@@ -26,6 +26,7 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Login correcto',
             'perfil' => $user->perfil_id, 
+            'user' => $user->user_id,
             'token' => $user->createToken('auth_token')->plainTextToken,
         ], 200);
     }

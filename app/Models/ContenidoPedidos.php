@@ -13,8 +13,7 @@ class ContenidoPedidos extends Model
     protected $fillable = [
         'clave',
         'pedido_id',
-        'alimento_detalle_id',
-        'user_id',
+        'plantilla_detalle_id',
         'cantidad'
     ];
 
@@ -37,7 +36,7 @@ class ContenidoPedidos extends Model
         return $this->belongsTo(Pedidos::class, 'pedido_id', 'pedido_id');
     }
 
-    public function alimentosDetalles() {
-        return $this->belongsTo(AlimentosDetalles::class, 'alimento_detalle_id', 'alimento_detalle_id');
+    public function plantillaDetalles() {
+        return $this->belongsTo(PlantillaDetalles::class, 'plantilla_detalle_id', 'plantilla_detalle_id');
     }
 }

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use function PHPSTORM_META\type;
+use function PHPUnit\Framework\isEmpty;
 
 class PlantillaEncabezadosController extends Controller
 {
@@ -34,16 +35,18 @@ class PlantillaEncabezadosController extends Controller
                 ->get();
             foreach($encabezado->secciones as $key_tab => $tab){
                     $plantilla_seccion_id = $tab->plantilla_seccion_id;
-                    $detalles = PlantillaDetalles::where('plantilla_seccion_id', $plantilla_seccion_id)
+                    $contenido = PlantillaDetalles::where('plantilla_seccion_id', $plantilla_seccion_id)
                         ->where('baja', 0)
                         ->get();
-                    $encabezado->secciones[$key_tab]->detalles = $detalles->toArray();
+                    $encabezado->secciones[$key_tab]->contenido = $contenido->toArray();
 
+                    /*
                     $permisos = PlantillaSeccionUsuarios::where('plantilla_seccion_id', $plantilla_seccion_id)
                         ->where('baja', 0)
                         ->get();
                     
                     $encabezado->secciones[$key_tab]->permisos = array_column($permisos->toArray(), 'usuarios_id');
+                    */
                 }
                 $encabezados[$key_encabezado] = $encabezado;
             }
@@ -187,11 +190,13 @@ class PlantillaEncabezadosController extends Controller
                     ->update(['baja' => 1]);
             }
 
+            
             foreach ($data['secciones'] as $key => $seccion){
                 $nuevos_detalles_seccion = [];
                 $seccion_nueva = false;
                 $plantilla_seccion_id = null;
 
+                
                 if(!isset($seccion['plantilla_seccion_id'])){
                     $seccion_nueva = true;
                 }else{
@@ -208,8 +213,9 @@ class PlantillaEncabezadosController extends Controller
                     $contenido_originales = PlantillaDetalles::where('plantilla_seccion_id', $plantilla_seccion_id)
                         ->where('baja', 0)
                         ->get();
-                    $contenido_originales_id = array_column($contenido_originales->toArray(), 'plantilla_detalle_id');
-                    $contenido_nuevas_id = array_column($seccion['detalles'], 'id');
+                    
+                    $contenido_originales_id = array_column($contenido_originales->toArray(), 'plantilla_seccion_id');
+                    $contenido_nuevas_id = array_column($seccion['detalles'], 'plantilla_seccion_id');
                     $contenido_eliminados = array_diff($contenido_originales_id, $contenido_nuevas_id);
 
                     //Eliminar detalles eliminados
@@ -233,6 +239,26 @@ class PlantillaEncabezadosController extends Controller
                             $nuevos_detalles_seccion[] = $contenido;
                         }
                     }
+                    //Insertar nuevos detalles en sección ya existente
+
+                    foreach ($seccion['detalles'] as $key => $contenido){
+                        if ($contenido['plantilla_detalle_id'] == ''){
+                            $nuevosDetalles = PlantillaDetalles::create([
+                                'plantilla_seccion_id' => $contenido['plantilla_seccion_id'],
+                                'orden' => (isset($contenido['orden']) ? $contenido['orden'] : 0),
+                                'etiqueta' => (isset($contenido['etiqueta']) ? $contenido['etiqueta'] : ''),
+                                'descripcion' => (isset($contenido['descripcion']) ? $contenido['descripcion'] : ''),
+                                'tipo_campo_id' => (isset($contenido['tipo_campo_id']) ? $contenido['tipo_campo_id'] : ''),
+                                'longitud' => (isset($contenido['longitud']) ? $contenido['longitud'] : 0),
+                                'obligatorio' => (isset($contendio['obligatorio']) ? $contendio['obligatorio'] : 0),
+                                'valor_default' => (isset($contendio['valor_default']) ? $contendio['valor_defult'] : ''),
+                                'valor_minimo' => (isset($contenido['valor_minimo']) ? $contenido['valor_minimo'] : ''),
+                                'valor_maximo' => (isset($contenido['valor_maximo']) ? $contenido['valor_maximo'] : ''),
+                                'valor_ideal' => (isset($contendio['valor_ideal']) ? $contendio['valor_ideal'] : ''),
+                                'baja' => 0
+                            ]);
+                        }
+                    }
                 }
                 if($seccion_nueva){
                     //Se inserta la sección
@@ -246,6 +272,7 @@ class PlantillaEncabezadosController extends Controller
                     $plantilla_seccion_id = $nuevaSeccion->plantila_seccion_id;
                     $nuevos_detalles_seccion = $seccion['detalles'];
                 }
+
                 foreach($nuevos_detalles_seccion as $key => $contenido){
                     $nuevosDetalles = PlantillaDetalles::create([
                         'plantilla_seccion_id' => $plantilla_seccion_id,

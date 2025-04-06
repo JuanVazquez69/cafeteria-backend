@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Http\Controllers\PedidosController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -64,5 +66,9 @@ class User extends Authenticatable
 
     public function perfil(){
         return $this->belongsTo(Perfil::class, 'perfil_id', 'perfil_id');
+    }
+
+    public function pedido() {
+        return $this->hasMany(PedidosController::class, 'user_id', 'user_id');
     }
 }

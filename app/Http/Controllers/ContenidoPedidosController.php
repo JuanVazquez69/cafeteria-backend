@@ -35,7 +35,6 @@ class ContenidoPedidosController extends Controller
             'clave' => $request['calve'],
             'pedido_id' => $request['pedido_id'],
             'alimento_detalle_id' => $request['alimento_detalle_id'],
-            'user_id' => $request['user_id'],
             'baja' => 0
         ]);
 

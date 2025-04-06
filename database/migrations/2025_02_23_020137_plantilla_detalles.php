@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('plantilla_detalles', function(Blueprint $table){
-            $table->id('plantilla_detalle_Id');
+            $table->id('plantilla_detalle_id');
             $table->foreignId('plantilla_seccion_id')->constrained('plantilla_secciones')->references('plantilla_seccion_id')->onDelete('cascade');
             $table->integer('orden', false, true);
             $table->string('etiqueta');

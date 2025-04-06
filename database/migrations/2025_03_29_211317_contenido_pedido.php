@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id('contenido_pedido_id');
             $table->bigInteger('clave', false, true);
             $table->foreignId('pedido_id')->constrained('pedidos')->references('pedido_id')->onDelete('cascade');
-            $table->foreignId('alimento_detalle_id')->constrained('alimentos_detalles')->references('alimento_detalle_id')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->references('user_id')->onDelete('cascade');
+            $table->foreignId('plantilla_detalle_id')->constrained('plantilla_detalles')->references('plantilla_detalle_id')->onDelete('cascade');
             $table->integer('cantidad', false);
             $table->timestamps();
         });

@@ -1,17 +1,15 @@
 <?php
 
+use App\Http\Controllers\AlimentosController;
+use App\Http\Controllers\EntregaUbicacionController;
+use App\Http\Controllers\PedidosController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\PlantillaEncabezadosController;
 use App\Http\Controllers\TipoCampoController;
 use App\Http\Controllers\TipoContactoController;
+use App\Http\Controllers\TipoPagoController;
 use App\Http\Controllers\TipoPlantillaController;
 use App\Http\Controllers\UserController;
-use App\Models\Perfil;
-use App\Models\PlantillaEncabezados;
-use App\Models\TipoCampo;
-use App\Models\TipoContacto;
-use App\Models\TipoPlantilla;
-use Illuminate\Database\Query\IndexHint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -71,4 +69,32 @@ Route::controller(TipoCampoController::class)->prefix('tipo_campo')->group(funct
     Route::put('/update/{id}', 'update')->name('tipo_campo.update');
     Route::put('/baja', 'baja')->name('tipo_campo.baja');
     Route::delete('/delete', 'delete')->name('tipo_campo.delete');
+});
+
+Route::controller(AlimentosController::class)->prefix('alimentos')->group(function(){
+   Route::get('/', 'index')->name('alimentos.index');     
+});
+
+Route::controller(TipoPagoController::class)->prefix('tipo_pago')->group(function(){
+    Route::get('/', 'index')->name('tipo_pago.index');
+    Route::post('/store', 'store')->name('tipo_pago.store');
+    Route::put('/update', 'update')->name('tipo_pago.update');
+    Route::put('/baja', 'baja')->name('tipo_pago.baja');
+    Route::delete('/delete', 'delete')->name('tipo_pago.delete');
+});
+
+Route::controller(EntregaUbicacionController::class)->prefix('ubicacion')->group(function(){
+    Route::get('/', 'index')->name('ubicacion.index');
+    Route::post('/store', 'store')->name('ubicacion.store');
+    Route::put('/update', 'update')->name('ubicacion.update');
+    Route::put('/baja', 'baja')->name('ubicacion.baja');
+    Route::delete('/delete', 'delete')->name('ubicacion.delete');
+});
+
+Route::controller(PedidosController::class)->prefix('pedido')->group(function(){
+    Route::get('/', 'index')->name('pedido.index');
+    Route::post('/store', 'store')->name('pedido.store');
+    Route::put('/update', 'update')->name('pedido.update');
+    Route::put('/baja', 'baja')->name('pedido.baja');
+    Route::delete('/delete', 'delete')->name('pedido.delete');
 });
