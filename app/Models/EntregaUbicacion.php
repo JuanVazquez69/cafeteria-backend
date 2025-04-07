@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class EntregaUbicacion extends Model
 {
-    protected $table = 'entrega_ubicacion';
+    protected $table = 'ubicacion_entrega';
     protected $primaryKey = 'entrega_ubicacion_id';
     public $timestamps = true;
 
     protected $fillable = [
         'clave',
-        'entrega_ubicacion_id',
+        'edificio',
         'baja'
     ];
 

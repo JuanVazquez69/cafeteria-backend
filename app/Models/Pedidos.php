@@ -14,6 +14,7 @@ class Pedidos extends Model
         'clave',
         'tipo_pago_id',
         'user_id',
+        'entrega_ubicacion_id',
         'cantidad_articulos',
         'total',
     ];
@@ -38,7 +39,7 @@ class Pedidos extends Model
     }
 
     public function contenidoPedido() {
-        return $this->hasMany(ContenidoPedidos::class, 'contenido_pedido_id', 'contenido_pedido_id');
+        return $this->hasMany(ContenidoPedidos::class, 'pedido_id', 'pedido_id');
     }
 
     public function usurio(){

@@ -12,7 +12,7 @@ class TipoPago extends Model
 
     protected $fillable = [
         'clave',
-        'tipo_pago_id',
+        'tipo_pago',
         'baja'
     ];
 

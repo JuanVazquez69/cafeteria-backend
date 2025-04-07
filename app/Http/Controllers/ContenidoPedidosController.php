@@ -32,9 +32,10 @@ class ContenidoPedidosController extends Controller
     public function store(Request $request)
     {
         $contenido_pedido = ContenidoPedidos::create([
-            'clave' => $request['calve'],
+            'clave' => 0,
             'pedido_id' => $request['pedido_id'],
-            'alimento_detalle_id' => $request['alimento_detalle_id'],
+            'plantilla_detalle_id' => $request['plantilla_detalle_id'],
+            'cantidad' => $request['cantidad'],
             'baja' => 0
         ]);
 

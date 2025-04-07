@@ -27,7 +27,7 @@ class ContenidoPedidos extends Model
         static::created(function ($contenido_pedido){
             //Acutalizamos el campo 'clave' con el id recién creado
             $contenido_pedido->update([
-                'clave' => $contenido_pedido
+                'clave' => $contenido_pedido->contenido_pedido_id
             ]);
         });
     }

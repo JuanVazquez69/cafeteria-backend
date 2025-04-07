@@ -29,11 +29,13 @@ class PedidosController extends Controller
      */
     public function store(Request $request)
     {
+        
         $pedido = Pedidos::create(
             [
-                //'clave' => $request['clave'],
+                'clave' => 0,
                 'tipo_pago_id' => $request['tipo_pago_id'],
                 'user_id' => $request['user_id'],
+                'entrega_ubicacion_id' => $request['entrega_ubicacion_id'],
                 'cantidad_articulos' => $request['cantidad_articulos'],
                 'total' => $request['total'],
             ]

@@ -31,7 +31,7 @@ class EntregaUbicacionController extends Controller
     {
         $ubicacion = EntregaUbicacion::create([
             'clave' => $request['clave'],
-            'entrega_ubicacion' => $request['entrega_ubicacion'],
+            'edificio' => $request['edificio'],
             'baja' => 0
         ]);
 

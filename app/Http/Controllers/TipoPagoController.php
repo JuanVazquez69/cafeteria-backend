@@ -32,7 +32,7 @@ class TipoPagoController extends Controller
         $tipoPago = TipoPago::create(
             [
                 'clave' => $request['clave'],
-                'tipo_pago' => $request['tipo_pago_id'],
+                'tipo_pago' => $request['tipo_pago'],
                 'baja' => 0
             ]
             );
