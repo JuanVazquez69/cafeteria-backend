@@ -17,10 +17,11 @@ class Pedidos extends Model
         'entrega_ubicacion_id',
         'cantidad_articulos',
         'total',
+        'estado'
     ];
 
     protected $hidden = [
-        'created_at',
+        'created_at', //Para mostar cuando se realizo el pedido
         'updated_at'
     ];
 
@@ -42,7 +43,7 @@ class Pedidos extends Model
         return $this->hasMany(ContenidoPedidos::class, 'pedido_id', 'pedido_id');
     }
 
-    public function usurio(){
+    public function usuario(){
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

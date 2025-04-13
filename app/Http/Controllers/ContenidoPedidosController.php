@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\ContenidoPedidos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use function Pest\Laravel\json;
 
@@ -48,11 +49,10 @@ class ContenidoPedidosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show($pedido)
     {
-        return response()->json([
-            ContenidoPedidos::findOrFail($request['contenido_pedido_id'])
-        ], 200);
+        $contenido = DB::select('CALL procedure_contenido_pedido(?)', [$pedido]);
+        return $contenido;
     }
 
     /**

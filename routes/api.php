@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlimentosController;
+use App\Http\Controllers\ContenidoPedidosController;
 use App\Http\Controllers\EntregaUbicacionController;
 use App\Http\Controllers\PedidosController;
 use App\Http\Controllers\PerfilController;
@@ -93,8 +94,14 @@ Route::controller(EntregaUbicacionController::class)->prefix('ubicacion')->group
 
 Route::controller(PedidosController::class)->prefix('pedido')->group(function(){
     Route::get('/', 'index')->name('pedido.index');
+    Route::post('/user', 'show')->name('pedido.show');
     Route::post('/store', 'store')->name('pedido.store');
     Route::put('/update', 'update')->name('pedido.update');
     Route::put('/baja', 'baja')->name('pedido.baja');
     Route::delete('/delete', 'delete')->name('pedido.delete');
+});
+
+Route::controller(ContenidoPedidosController::class)->prefix('details_pedido')->group(function(){
+    Route::get('/', 'index')->name('details_pedido.index');
+    Route::get('/{id}', 'show')->name('details_pedido.show');
 });

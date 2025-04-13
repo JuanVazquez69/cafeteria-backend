@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pedidos;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PedidosController extends Controller
 {
@@ -38,6 +40,7 @@ class PedidosController extends Controller
                 'entrega_ubicacion_id' => $request['entrega_ubicacion_id'],
                 'cantidad_articulos' => $request['cantidad_articulos'],
                 'total' => $request['total'],
+                'status' => 0
             ]
         );
 
@@ -55,9 +58,10 @@ class PedidosController extends Controller
      */
     public function show(Request $request)
     {
-        return response()->json([
-            Pedidos::findOrFail($request['pedido_id'])
-        ], 200);
+
+        $pedido = DB::select('CALL procedure_pedidos_usuario(?)', [$request['user_id']]);
+
+        return $pedido;
     }
 
     /**
