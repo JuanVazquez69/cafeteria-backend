@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -31,6 +32,15 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function logout(Request $request){
+        // Revocar todos los tokens del usuario (Sanctum)
+        $request->user()->tokens()->delete();
+
+        return response()->json([
+            'message' => 'Sesión cerrada exitosamente'
+        ]);
+    }
+
     public function store(Request $request){
         $usuario = User::create([
             'perfil_id' => $request['perfil_id'],
@@ -48,20 +58,52 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function show(Request $request){
-        
+    public function show($user_id){
+        $usuario = User::with('contactos')->find($user_id);
 
-        return response()->json([
-            User::findOrFail()
-        ], 200);
+        return $usuario;
     }
 
     public function update(Request $request, $id){
-        $usuario = User::findOrFail($id);
-        $usuario->update($request->all());
-        return response()->json([
-            $usuario
-        ], 200);
+        DB::beginTransaction();
+
+        try{
+            $usuario = User::findOrFail($id);
+
+            $updateData = [
+                'name' => $request['name'],
+                'email' => $request['email'],
+            ];
+
+            if($request->has('password')){
+                $updateData['password'] = Hash::make($request->password);
+            }
+            
+            $usuario->update($updateData);
+            foreach ($request->contactos as $contactoData){
+                if(isset($contactoData['contacto_id'])){
+                    $update_contacto = $usuario->contactos()
+                        ->where('contacto_id', $contactoData['contacto_id'])
+                        ->firstOrFail();
+
+                    $update_contacto->update($contactoData);
+                }else{
+                    $newContacto = $usuario->contactos()->create($contactoData);
+                }
+            }
+            DB::commit();
+
+            return response()->json([
+                $usuario
+            ], 200);
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error al actualizar usuario',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function baja($id){

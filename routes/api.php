@@ -24,9 +24,11 @@ Route::get('/saludo', function () {
 
 Route::controller(UserController::class)->prefix('user')->group(function(){
     Route::get('/', 'index')->name('user.index');
+    Route::get('/{id}', 'show')->name('user.show');
     Route::post('/login', 'login')->name('user.login');
+    Route::post('/logout', 'logout')->name('user.logout')->middleware('auth:sanctum'); // Solo usuarios autenticados
     Route::post('/store', 'store')->name('user.store');
-    Route::put('/update', 'update')->name('user.update');
+    Route::put('/update/{id}', 'update')->name('user.update')->middleware('auth:sanctum'); // Solo usuarios autenticados
     Route::put('/baja', 'baja')->name('user.baja');
     Route::delete('/delete', 'destroy')->name('user.destroy');
 });
