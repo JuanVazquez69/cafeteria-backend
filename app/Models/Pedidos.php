@@ -17,7 +17,8 @@ class Pedidos extends Model
         'entrega_ubicacion_id',
         'cantidad_articulos',
         'total',
-        'estado'
+        'estado',
+        'baja'
     ];
 
     protected $hidden = [

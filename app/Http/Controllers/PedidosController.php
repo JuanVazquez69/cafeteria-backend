@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pedidos;
+use App\Models\VWPedidosManager;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,8 @@ class PedidosController extends Controller
      */
     public function index()
     {
-        return response()->json(Pedidos::all());
+        $pedidos = VWPedidosManager::all();
+        return $pedidos;
     }
 
     /**
@@ -40,7 +42,8 @@ class PedidosController extends Controller
                 'entrega_ubicacion_id' => $request['entrega_ubicacion_id'],
                 'cantidad_articulos' => $request['cantidad_articulos'],
                 'total' => $request['total'],
-                'status' => 0
+                'status' => 0,
+                'baja' => 0
             ]
         );
 
@@ -89,9 +92,9 @@ class PedidosController extends Controller
      * Update the status 'baja' to true or 1
      */
 
-     public function baja(Pedidos $pedidos){
+     public function baja(Request $request){
         $pedido = Pedidos::findOrFail(
-            $pedidos['pedido_id']
+            $request['pedido_id']
         );
         $pedido->update(['baja' => 1]);
 
